@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#100d1d">
+<title>In Another Universe, Shalini…</title>
+<style>
+  :root{
+    --night:#100d1d; --plum:#25152d; --wine:#5d203f; --rose:#ff8eb5;
+    --gold:#f4d39a; --cream:#fff3e9; --muted:#c5b6c9; --glass:rgba(255,245,250,.075);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--night);color:var(--cream);font-family:Georgia,"Times New Roman",serif;overflow-x:hidden}
+  button{font:inherit}
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.09;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.28'/%3E%3C/svg%3E")}
+  #stars{position:fixed;inset:0;z-index:0;pointer-events:none}
+  .aurora{position:fixed;inset:-20%;z-index:0;pointer-events:none;background:radial-gradient(ellipse at 20% 20%,rgba(106,40,91,.28),transparent 40%),radial-gradient(ellipse at 80% 60%,rgba(31,83,113,.18),transparent 38%);animation:aurora 16s ease-in-out infinite alternate}
+  @keyframes aurora{to{transform:translate(3%, -2%) scale(1.08);filter:hue-rotate(25deg)}}
+  .wrap{position:relative;z-index:1}
+  section{min-height:100svh;padding:90px 22px;display:flex;align-items:center;justify-content:center;position:relative;isolation:isolate}
+  .inner{width:min(920px,100%);margin:auto;text-align:center}
+  .eyebrow{font:600 .72rem/1.5 system-ui,sans-serif;letter-spacing:.32em;text-transform:uppercase;color:var(--gold)}
+  h1,h2,p{margin-top:0}
+  h1{font-size:clamp(3.2rem,10vw,7.8rem);line-height:.92;letter-spacing:-.055em;font-weight:400;margin:25px 0}
+  h2{font-size:clamp(2.3rem,6vw,4.8rem);line-height:1.02;font-weight:400;letter-spacing:-.035em;margin:20px 0}
+  .italic{font-style:italic;color:var(--rose)}
+  .lede{font-size:clamp(1.08rem,2.5vw,1.4rem);line-height:1.85;color:#e8dbe7;max-width:690px;margin:25px auto}
+  .small{font: .9rem/1.7 system-ui,sans-serif;color:var(--muted)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:14px 22px;border:1px solid rgba(244,211,154,.6);border-radius:999px;color:var(--cream);background:linear-gradient(135deg,rgba(255,142,181,.17),rgba(244,211,154,.08));cursor:pointer;transition:transform .25s,background .25s,border-color .25s;box-shadow:0 8px 35px #0002}
+  .btn:hover{transform:translateY(-3px);background:linear-gradient(135deg,rgba(255,142,181,.28),rgba(244,211,154,.17));border-color:var(--gold)}
+  .btn:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+  .btn.secondary{border-color:#ffffff30;background:#ffffff08}
+  .hero{overflow:hidden;background:radial-gradient(ellipse at 50% 70%,rgba(120,29,76,.34),transparent 55%)}
+  .halo{width:min(68vw,470px);aspect-ratio:1;border:1px solid #f4d39a36;border-radius:50%;position:absolute;left:50%;top:48%;transform:translate(-50%,-50%);z-index:-1;box-shadow:0 0 90px #e45e9b13,inset 0 0 80px #e45e9b0b;animation:halo 8s ease-in-out infinite}
+  .halo:before,.halo:after{content:"";position:absolute;inset:9%;border:1px solid #ff8eb51e;border-radius:50%;transform:rotate(25deg) scaleX(.7)}
+  .halo:after{transform:rotate(-32deg) scaleX(.55)}
+  @keyframes halo{50%{transform:translate(-50%,-50%) scale(1.045);box-shadow:0 0 130px #e45e9b21,inset 0 0 100px #e45e9b12}}
+  .scrollhint{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);font: .68rem system-ui,sans-serif;letter-spacing:.2em;color:#b8a9bd;text-transform:uppercase;animation:bob 2s infinite}
+  @keyframes bob{50%{translate:0 7px}}
+  .divider{height:1px;width:90px;margin:28px auto;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+  .memory-card{max-width:760px;margin:35px auto;padding:clamp(25px,5vw,48px);border:1px solid #ffffff18;border-radius:28px;background:linear-gradient(145deg,#ffffff0d,#ffffff03);box-shadow:0 25px 90px #0003;backdrop-filter:blur(12px)}
+  .quote{font-size:clamp(1.4rem,4vw,2.2rem);line-height:1.5}
+  .type-line{min-height:3.4em;color:var(--gold);font-style:italic;font-size:clamp(1.25rem,3vw,1.8rem);line-height:1.5}
+  .choices{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:28px auto}
+  .reveal{display:none;max-width:650px;margin:25px auto 0;padding:22px;border-left:2px solid var(--rose);background:#ffffff08;text-align:left;line-height:1.85;color:#f1dfe9;border-radius:0 16px 16px 0}
+  .reveal.show{display:block;animation:fadeUp .8s both}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+  .task-card{max-width:660px;margin:30px auto;padding:28px;border-radius:24px;background:#ffffff09;border:1px solid #ffffff1a}
+  .meter{height:4px;background:#ffffff18;border-radius:99px;max-width:440px;margin:24px auto;overflow:hidden}
+  .meter span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--gold));transition:width .7s}
+  .nightdrive{background:linear-gradient(#111222,#17162b 45%,#28142b);overflow:hidden}
+  .moon{position:absolute;right:12%;top:12%;width:clamp(65px,11vw,125px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fff5dc,#edc6c1 65%,#ad809f);box-shadow:0 0 80px #e5b6da35}
+  .road{position:absolute;bottom:0;left:0;width:100%;height:38%;background:linear-gradient(#211b32,#080a13);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);opacity:.95}
+  .road:after{content:"";position:absolute;left:49.6%;top:5%;height:95%;width:2px;background:repeating-linear-gradient(to bottom,#f4d39a 0 28px,transparent 28px 52px);transform:perspective(100px) rotateX(12deg);opacity:.55}
+  .horizon{position:absolute;bottom:35%;left:0;right:0;height:100px;background:linear-gradient(transparent,#35203b55,transparent)}
+  .rain{position:absolute;inset:0;pointer-events:none;opacity:.32;background-image:repeating-linear-gradient(104deg,transparent 0 21px,#b9d7ff4d 22px,#b9d7ff4d 23px,transparent 24px 48px);background-size:160px 100%;animation:rain  .35s linear infinite}
+  @keyframes rain{to{background-position:0 90px}}
+  .drive-content{position:relative;z-index:2;padding-bottom:12vh}
+  .drive-content .memory-card{background:#0b0c19b8}
+  .scene-art{width:min(100%,560px);margin:22px auto 30px;display:block;filter:drop-shadow(0 18px 35px #0005)}
+  .art-frame{max-width:620px;margin:26px auto;padding:12px;border:1px solid #ffffff20;border-radius:24px;background:linear-gradient(145deg,#ffffff10,#ffffff02);overflow:hidden}
+  .art-frame svg{display:block;width:100%;height:auto;border-radius:16px}
+  .car-caption{font:.76rem/1.6 system-ui,sans-serif;letter-spacing:.12em;text-transform:uppercase;color:#f4d39a;margin-top:8px}
+  .petal{position:fixed;top:-30px;z-index:3;pointer-events:none;animation:fall linear forwards;opacity:.75}
+  @keyframes fall{to{transform:translate3d(var(--drift),110vh,0) rotate(650deg);opacity:0}}
+  .letter{position:relative;max-width:730px;margin:35px auto;text-align:left;padding:clamp(26px,5vw,52px);background:linear-gradient(150deg,#fff6e9,#f1d7db);color:#42243a;border-radius:5px 22px 8px 18px;box-shadow:0 28px 90px #0006;transform:rotate(-.4deg)}
+  .letter:before{content:"";position:absolute;inset:10px;border:1px solid #9a596a55;pointer-events:none}
+  .letter p{position:relative;font-size:clamp(1.05rem,2.4vw,1.25rem);line-height:1.9}
+  .letter .sign{font-size:1.8rem;font-style:italic;color:#8c355f}
+  footer{padding:30px 20px 45px;text-align:center;color:#9d8fa7;font: .75rem/1.7 system-ui,sans-serif}
+  .topbar{position:fixed;z-index:15;top:0;left:0;right:0;padding:12px 18px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(#100d1dcc,transparent);font: .7rem system-ui,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:#ddcbdc}
+  .topbar button{background:#ffffff10;border:1px solid #ffffff20;color:#f7e8f0;border-radius:50%;width:39px;height:39px;cursor:pointer}
+  .progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--rose),var(--gold));z-index:30}
+  .heart{display:inline-block;color:var(--rose);animation:beat 1.3s infinite}
+  @keyframes beat{50%{transform:scale(1.22)}}
+  .end-note{font-size:.9rem;color:#bcaec5;max-width:600px;margin:30px auto 0;line-height:1.7}
+
+  /* CINEMATIC PASS: slow camera language, film lighting and scene reveals */
+  body:after{content:"";position:fixed;inset:0;pointer-events:none;z-index:12;background:radial-gradient(ellipse at center,transparent 42%,rgba(5,4,12,.48) 100%);opacity:.72}
+  .cinema-bars{position:fixed;inset:0;pointer-events:none;z-index:11;opacity:0;transition:opacity 1.2s}
+  .cinema-bars:before,.cinema-bars:after{content:"";position:absolute;left:0;right:0;height:clamp(10px,3.2vh,32px);background:#07060c;box-shadow:0 0 25px #0005}
+  .cinema-bars:before{top:0}.cinema-bars:after{bottom:0}
+  body.cinematic .cinema-bars{opacity:.76}
+  .scene-light{position:fixed;inset:-30%;z-index:0;pointer-events:none;background:linear-gradient(115deg,transparent 35%,rgba(255,202,217,.055) 48%,rgba(244,211,154,.12) 50%,transparent 63%);transform:translateX(-75%) rotate(2deg);animation:lightPass 13s ease-in-out infinite}
+  @keyframes lightPass{0%,25%{transform:translateX(-75%) rotate(2deg)}65%,100%{transform:translateX(75%) rotate(2deg)}}
+  .hero .inner>*{animation:heroRise 1.15s both;animation-delay:var(--delay,0s)}
+  .hero .eyebrow{--delay:.1s}.hero h1{--delay:.3s}.hero .divider{--delay:.55s}.hero .lede{--delay:.72s}.hero .btn{--delay:.92s}.hero .small{--delay:1.08s}
+  @keyframes heroRise{from{opacity:0;transform:translateY(22px);filter:blur(7px)}to{opacity:1;transform:translateY(0);filter:blur(0)}}
+  .js-motion .inner{opacity:.35;transform:translateY(28px) scale(.985);filter:blur(2px);transition:opacity 1s ease,transform 1.15s cubic-bezier(.2,.7,.15,1),filter 1s ease}
+  .js-motion section.in-view .inner{opacity:1;transform:none;filter:blur(0)}
+  section{overflow:hidden}
+  section:after{content:"";position:absolute;inset:0;pointer-events:none;z-index:-1;background:radial-gradient(ellipse at 50% 48%,transparent 20%,rgba(8,5,15,.2) 100%)}
+  .art-frame{position:relative;isolation:isolate;transform:translateZ(0)}
+  .art-frame:after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:linear-gradient(115deg,transparent 20%,rgba(255,238,225,.13) 48%,transparent 65%);transform:translateX(-130%);animation:frameGlint 8s ease-in-out infinite}
+  @keyframes frameGlint{0%,35%{transform:translateX(-130%)}75%,100%{transform:translateX(130%)}}
+  .art-frame svg{transform:scale(1.015);animation:slowCamera 18s ease-in-out infinite alternate;transform-origin:50% 55%}
+  @keyframes slowCamera{from{transform:scale(1.015) translate3d(0,0,0)}to{transform:scale(1.09) translate3d(0,-1%,0)}}
+  .scene-art{perspective:900px}
+  .scene-art svg{filter:saturate(1.1) contrast(1.04)}
+  .nightdrive{background:linear-gradient(180deg,#090d1c 0%,#17162b 36%,#3a1b36 72%,#100d1d 100%);}
+  .nightdrive:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 63%,rgba(255,113,139,.19),transparent 40%),linear-gradient(180deg,transparent 60%,#090811 100%);animation:driveGlow 7s ease-in-out infinite alternate}
+  @keyframes driveGlow{to{opacity:.55;filter:hue-rotate(-12deg)}}
+  .nightdrive .moon{animation:moonPulse 6s ease-in-out infinite;box-shadow:0 0 35px #e5b6da35,0 0 110px #e5b6da25}
+  @keyframes moonPulse{50%{box-shadow:0 0 55px #e5b6da55,0 0 150px #e5b6da3a;transform:scale(1.035)}}
+  .rain{background-image:repeating-linear-gradient(104deg,transparent 0 19px,#b9d7ff50 20px,#b9d7ff50 21px,transparent 22px 47px),repeating-linear-gradient(82deg,transparent 0 37px,#ffdbe522 38px,#ffdbe522 39px,transparent 40px 78px);animation:rain .34s linear infinite, rainFade 5s ease-in-out infinite alternate}
+  @keyframes rainFade{to{opacity:.48}}
+  .scene-art:before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none;background:linear-gradient(180deg,rgba(9,10,23,.08),transparent 40%,rgba(7,8,18,.22));border-radius:inherit}
+  .scene-art svg g:nth-of-type(2){transform-box:fill-box;transform-origin:center;animation:quietBreath 5s ease-in-out infinite}
+  @keyframes quietBreath{0%,100%{translate:0 0}50%{translate:0 -1.5px}}
+  .scene-art svg g:nth-of-type(3){animation:quietBreath 5s ease-in-out infinite reverse}
+  .scene-art svg path[fill="#fff0c7"]{filter:drop-shadow(0 0 8px #ffe4b0);animation:headlight 3.5s ease-in-out infinite alternate}
+  @keyframes headlight{to{opacity:.65;filter:drop-shadow(0 0 18px #ffe4b0)}}
+  .chapter-flash{position:fixed;inset:0;background:#f7c9d8;z-index:40;pointer-events:none;opacity:0}
+  .chapter-flash.flash{animation:flashCut .7s ease-out}
+  @keyframes flashCut{0%{opacity:0}15%{opacity:.12}100%{opacity:0}}
+  .letter{animation:letterFloat 7s ease-in-out infinite;box-shadow:0 30px 90px #0007,0 0 60px #f4d39a0c}
+  @keyframes letterFloat{0%,100%{transform:rotate(-.4deg) translateY(0)}50%{transform:rotate(.15deg) translateY(-5px)}}
+  .letter:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 20%,rgba(255,255,255,.35) 48%,transparent 70%);transform:translateX(-130%);animation:paperLight 12s ease-in-out infinite}
+  @keyframes paperLight{0%,45%{transform:translateX(-130%)}80%,100%{transform:translateX(130%)}}
+  .reveal.show{animation:revealCinema 1s cubic-bezier(.16,.8,.22,1) both}
+  @keyframes revealCinema{0%{opacity:0;transform:translateY(22px) scale(.98);filter:blur(6px)}70%{filter:blur(0)}100%{opacity:1;transform:none}}
+  .btn{position:relative;overflow:hidden}
+  .btn:before{content:"";position:absolute;inset:-2px;background:linear-gradient(110deg,transparent 30%,#ffffff26 50%,transparent 70%);transform:translateX(-120%);transition:transform .7s}
+  .btn:hover:before{transform:translateX(120%)}
+  .chapter-tag{position:absolute;left:50%;bottom:20px;transform:translateX(-50%);font:600 .62rem system-ui,sans-serif;letter-spacing:.28em;text-transform:uppercase;color:#f5d9dd80;white-space:nowrap}
+  .topbar span{transition:opacity .4s}
+  @media(max-width:600px){
+    .cinema-bars:before,.cinema-bars:after{height:10px}
+    .js-motion .inner{transform:translateY(18px) scale(.99)}
+    .art-frame svg{animation-duration:22s}
+    .scene-art svg{animation-duration:14s}
+    .letter{animation-duration:9s}
+  }
+  @media(prefers-reduced-motion:reduce){
+    .js-motion .inner{opacity:1;transform:none;filter:none}
+    .hero .inner>*{animation:none}
+    .art-frame svg,.letter,.scene-light,.rain,.nightdrive .moon{animation:none}
+  }
+
+  @media(max-width:600px){
+    section{min-height:100svh;padding:76px 16px 64px}.inner{width:100%;max-width:540px}
+    .halo{width:88vw}.memory-card{border-radius:20px;padding:23px 18px}.task-card{padding:22px 16px}
+    .topbar{padding:10px 12px}.road{height:24%}.moon{right:8%;top:10%}
+    .choices{flex-direction:column;align-items:stretch;width:100%;max-width:380px}.choices .btn{width:100%;white-space:normal;line-height:1.35}
+    .letter{padding:28px 23px;margin:24px auto}.letter p{line-height:1.8}.art-frame{padding:7px;border-radius:18px}
+    .car-caption{font-size:.68rem;letter-spacing:.07em}h1{font-size:clamp(3.1rem,15vw,5.4rem)}h2{font-size:clamp(2.35rem,10vw,3.8rem)}
+  }
+  @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="aurora"></div><div class="scene-light"></div><canvas id="stars"></canvas><div class="grain"></div><div class="cinema-bars" aria-hidden="true"></div><div class="chapter-flash" id="chapterFlash" aria-hidden="true"></div>
+<div class="progress" id="progress"></div>
+<nav class="topbar"><span>A little universe · for Shalini</span><button id="soundToggle" aria-label="Toggle ambient sound" title="Toggle ambient sound">♫</button></nav>
+<main class="wrap">
+  <section class="hero" id="begin">
+    <div class="chapter-tag">A short film made of what-ifs</div>
+    <div class="halo"></div>
+    <div class="inner">
+      <div class="eyebrow">A story the calendar never recorded</div>
+      <h1>In another<br><span class="italic">universe,</span><br>Shalini…</h1>
+      <div class="divider"></div>
+      <p class="lede">Some people enter your life quietly.<br>And somehow, the ordinary world is never quite ordinary again.</p>
+      <button class="btn" id="beginBtn">Step into the other universe <span>✦</span></button>
+      <p class="small" style="margin-top:18px">Best experienced with headphones, a little time, and no rush.</p>
+    </div>
+    <div class="scrollhint">The story begins ↓</div>
+  </section>
+
+  <section id="training">
+    <div class="inner">
+      <div class="eyebrow">Chapter I · The unexpected plot twist</div>
+      <h2>One year ago,<br>it was just <span class="italic">training.</span></h2>
+      <div class="memory-card">
+        <p class="quote">Karmayogi Training.<br>A room full of people learning how to do better.</p>
+        <p class="lede">I had no idea that somewhere between the sessions, the conversations, and all the perfectly ordinary moments, life was quietly preparing its favourite plot twist.</p>
+        <p class="type-line" id="typeLine">And then, there was you.</p>
+        <button class="btn" id="memoryBtn">Show me what changed ✨</button>
+        <div class="reveal" id="memoryReveal">The world did not change overnight. The same office. The same attendance machine. The same familiar corridors. But suddenly, they had a little more meaning. Sometimes a person becomes a reason to look forward to a place you have visited a thousand times before.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="edc">
+    <div class="inner">
+      <div class="eyebrow">The place where the story began</div>
+      <h2>EDC. A room full of people.<br><span class="italic">One person who stayed.</span></h2>
+      <div class="art-frame" aria-label="Illustration of EDC training centre and a tall woman with glasses">
+        <svg viewBox="0 0 600 310" role="img" aria-label="An evening at EDC training centre, with a tall woman wearing spectacles">
+          <defs><linearGradient id="edcSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#17203d"/><stop offset="1" stop-color="#5c2c52"/></linearGradient><linearGradient id="edcWindow"><stop stop-color="#f7d7a1"/><stop offset="1" stop-color="#cf8d93"/></linearGradient></defs>
+          <rect width="600" height="310" fill="url(#edcSky)"/><circle cx="500" cy="48" r="30" fill="#f5d5a0" opacity=".8"/>
+          <g fill="#f4d39a" opacity=".65"><circle cx="42" cy="45" r="2"/><circle cx="95" cy="78" r="1.5"/><circle cx="552" cy="100" r="2"/></g>
+          <path d="M40 125 L300 65 L560 125 V265 H40Z" fill="#30243f" stroke="#b88a9d" stroke-width="2"/><path d="M65 140 L300 88 L535 140" fill="none" stroke="#f4d39a" stroke-width="3"/>
+          <text x="300" y="124" text-anchor="middle" fill="#fff0d8" font-size="18" font-family="Arial,sans-serif" letter-spacing="5">EDC</text>
+          <g fill="url(#edcWindow)" opacity=".9"><rect x="80" y="155" width="70" height="72" rx="3"/><rect x="170" y="155" width="70" height="72" rx="3"/><rect x="360" y="155" width="70" height="72" rx="3"/><rect x="450" y="155" width="70" height="72" rx="3"/></g>
+          <path d="M0 267 Q130 245 250 270 T600 264 V310 H0Z" fill="#141626"/>
+          <g transform="translate(287 143)"><ellipse cx="24" cy="34" rx="24" ry="29" fill="#b97862"/><path d="M1 36 Q-9 5 18 1 Q45 -1 49 27 L43 18 Q28 10 9 19Z" fill="#241725"/><path d="M4 28 Q-3 39 4 51 L-2 62 Q-16 25 0 9Z" fill="#241725"/>
+          <rect x="2" y="28" width="19" height="12" rx="5" fill="none" stroke="#171321" stroke-width="3"/><rect x="27" y="28" width="19" height="12" rx="5" fill="none" stroke="#171321" stroke-width="3"/><path d="M21 33 H27" stroke="#171321" stroke-width="3"/>
+          <path d="M0 63 Q24 52 48 63 L62 133 H-15Z" fill="#a43d66"/><path d="M2 67 L-14 132 M45 67 L62 132" stroke="#e89bb4" stroke-width="3" opacity=".65"/><path d="M-7 130 L-12 152 M52 130 L57 152" stroke="#1a1724" stroke-width="8" stroke-linecap="round"/></g>
+          <text x="300" y="292" text-anchor="middle" fill="#f4d39a" font-size="11" font-family="Arial,sans-serif" letter-spacing="3">THE DAY AN ORDINARY PLACE CHANGED</text>
+        </svg>
+      </div>
+      <p class="small">EDC: a training centre in the memory. And somewhere in the room, a tall girl with spectacles who would become impossible to remember casually.</p>
+    </div>
+  </section>
+
+  <section id="saryu">
+    <div class="inner">
+      <div class="eyebrow">A memory from Saryu Mela</div><h2>The goodbye that<br><span class="italic">felt too soon.</span></h2>
+      <div class="art-frame" aria-label="Illustrated Saryu Mela at evening">
+        <svg viewBox="0 0 600 340" role="img" aria-label="A dreamy evening fair by the river, glowing stalls, ferris wheel, and reflections on water">
+          <defs><linearGradient id="melaSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#171b3a"/><stop offset=".55" stop-color="#853d68"/><stop offset="1" stop-color="#f0a477"/></linearGradient><linearGradient id="river" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#44345e"/><stop offset="1" stop-color="#111a34"/></linearGradient></defs>
+          <rect width="600" height="340" fill="url(#melaSky)"/><circle cx="460" cy="73" r="28" fill="#ffe1b1" opacity=".8"/>
+          <g stroke="#f7d6a0" stroke-width="2" fill="none" opacity=".8"><circle cx="125" cy="125" r="61"/><circle cx="125" cy="125" r="7"/><path d="M125 64V186 M64 125H186 M82 82L168 168 M168 82L82 168 M125 186L94 244 M125 186L158 244"/></g>
+          <g fill="#ffe7b4"><circle cx="125" cy="64" r="4"/><circle cx="186" cy="125" r="4"/><circle cx="125" cy="186" r="4"/><circle cx="64" cy="125" r="4"/><circle cx="82" cy="82" r="4"/><circle cx="168" cy="82" r="4"/><circle cx="82" cy="168" r="4"/><circle cx="168" cy="168" r="4"/></g>
+          <path d="M0 214 Q90 192 190 216 T390 210 T600 216 V340 H0Z" fill="url(#river)"/><path d="M0 232 Q100 220 205 235 T400 232 T600 238" stroke="#f4c9b1" stroke-width="2" opacity=".55" fill="none"/>
+          <g transform="translate(230 135)"><path d="M0 60 L10 0 H95 L110 60Z" fill="#492442" stroke="#f4d39a" stroke-width="2"/><path d="M-10 0 L55 -32 L120 0Z" fill="#e88a86"/><rect x="15" y="18" width="20" height="42" fill="#ffcb8e"/><rect x="45" y="18" width="20" height="42" fill="#ffcb8e"/><rect x="75" y="18" width="20" height="42" fill="#ffcb8e"/><text x="55" y="-8" text-anchor="middle" fill="#fff3d5" font-size="9" font-family="Arial,sans-serif" letter-spacing="2">MELA</text></g>
+          <g fill="#ffdd9b"><circle cx="220" cy="94" r="3"/><circle cx="255" cy="82" r="3"/><circle cx="292" cy="90" r="3"/><circle cx="333" cy="72" r="3"/><circle cx="370" cy="96" r="3"/><circle cx="400" cy="112" r="3"/><circle cx="195" cy="125" r="3"/></g>
+          <g opacity=".55" stroke="#e8b4d5" stroke-width="2"><path d="M230 244l-10 45 M255 244l10 65 M285 244l-3 54 M320 244l15 43 M360 244l-4 62 M400 244l12 38"/></g>
+          <text x="300" y="322" text-anchor="middle" fill="#fff0d8" font-size="12" font-family="Arial,sans-serif" letter-spacing="4">SARYU MELA · EVENING LIGHTS</text>
+        </svg>
+      </div>
+      <div class="memory-card"><p class="quote">I remember being sad when we met at Saryu Mela.</p><p class="lede">Not because the moment was bad. Because I knew how difficult it might be to meet you again easily. Sometimes a lovely moment carries a quiet ache inside it: you are happy it happened, and already wishing it did not have to end.</p><p class="small">Some places become memorable because of what happened there. Some because of who stood beside you.</p></div>
+    </div>
+  </section>
+
+  <section id="office">
+    <div class="inner">
+      <div class="eyebrow">Chapter II · Attendance, but make it poetry</div>
+      <h2>My most suspicious<br><span class="italic">office habit.</span></h2>
+      <p class="lede">A tiny investigation into why punching in started feeling strangely important.</p>
+      <div class="task-card">
+        <p style="font-size:1.25rem;line-height:1.7">Please select the most plausible explanation for this sudden enthusiasm for office attendance.</p>
+        <div class="choices" id="officeChoices">
+          <button class="btn secondary" data-answer="A">Exceptional professional discipline</button>
+          <button class="btn secondary" data-answer="B">A deep love for the attendance machine</button>
+          <button class="btn secondary" data-answer="C">The possibility of one particular glimpse</button>
+        </div>
+        <div class="reveal" id="officeReveal"></div>
+      </div>
+      <p class="small">The machine got the punch. The heart had its own attendance register.</p>
+    </div>
+  </section>
+
+  <section id="details">
+    <div class="inner">
+      <div class="eyebrow">Chapter III · The details that stayed</div>
+      <h2>It was never just<br>about <span class="italic">seeing you.</span></h2>
+      <p class="lede">Some details do not ask for attention. They simply stay.</p>
+      <div class="memory-card">
+        <p class="quote">Your voice.</p>
+        <p class="lede">There is something about it that can follow me long after the conversation ends. Some voices are heard. Yours has a way of lingering.</p>
+        <div class="divider"></div>
+        <p class="quote">The way your hair falls.</p>
+        <p class="lede">That effortless movement, the way a few strands frame your face, and how even a small gesture can become a detail worth remembering.</p>
+        <div class="divider"></div>
+        <p class="quote">Your rawness.</p>
+        <p class="lede">Unfiltered. Real. Not polished into somebody else's idea of how a woman should be. That rare feeling of meeting a person who seems to have kept hold of herself.</p>
+        <button class="btn" id="detailBtn">There is one more thing…</button>
+        <div class="reveal" id="detailReveal">Maybe what stayed most was the feeling of you being unmistakably you. Not a perfect character written for somebody else's approval. A real person, with her own edges, laughter, moods, and magic. That kind of realness is difficult to forget.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="parallel">
+    <div class="inner">
+      <div class="eyebrow">Chapter IV · A question without an answer</div>
+      <h2>What if life had<br>taken <span class="italic">another turn?</span></h2>
+      <div class="memory-card">
+        <p class="lede">In this world, there are structures, circumstances, and realities that cannot be wished away by beautiful sentences.</p>
+        <p class="quote">So I sometimes imagine a parallel world.</p>
+        <p class="lede">Not because this one is unreal, but because imagination is the one place where a road not taken can still be travelled for a while.</p>
+        <button class="btn" id="portalBtn">Open the parallel-world door ✦</button>
+        <div class="reveal" id="portalReveal">In that universe, perhaps we meet without the complicated footnotes. Perhaps there is no need to measure every sentence or hide every smile. Perhaps we simply get to know each other, slowly and honestly, and discover what the world might have looked like if the timing had been different.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="nightdrive" id="drive">
+    <div class="moon"></div><div class="horizon"></div><div class="road"></div><div class="rain"></div>
+    <div class="inner drive-content">
+      <div class="eyebrow">Chapter V · Evening · A red car · Rain on the windows</div>
+      <h2>Just us two.<br><span class="italic">And those eyes.</span></h2>
+      <p class="lede">In the fantasy, a red Skoda Kylaq is parked beside a rain-dark highway at evening. No destination. No audience. Just the hush of rain and the impossible luxury of looking into your eyes for as long as the moment allows.</p>
+      <div class="art-frame scene-art"><svg viewBox="0 0 600 350" role="img" aria-label="A red compact SUV inspired by a Skoda Kylaq parked on a rainy evening, with two people inside looking at one another">
+        <defs><linearGradient id="carSky" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#15182e"/><stop offset=".58" stop-color="#5b3559"/><stop offset="1" stop-color="#e68b84"/></linearGradient><linearGradient id="carPaint" x1="0" y1="0" x2="0" y2="1"><stop stop-color="#ff4f62"/><stop offset=".45" stop-color="#c7193d"/><stop offset="1" stop-color="#650d2c"/></linearGradient><linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#9bc4d9" stop-opacity=".9"/><stop offset=".55" stop-color="#2a354e" stop-opacity=".95"/><stop offset="1" stop-color="#e7a4b2" stop-opacity=".7"/></linearGradient></defs>
+        <rect width="600" height="350" fill="url(#carSky)"/><circle cx="488" cy="67" r="32" fill="#ffd6bc" opacity=".75"/><path d="M0 190 Q90 160 170 194 T340 184 T600 194 V350 H0Z" fill="#24213a"/><path d="M0 238 Q150 222 300 240 T600 236" stroke="#e9a7b4" stroke-width="2" opacity=".45" fill="none"/>
+        <g stroke="#b8d8f1" stroke-width="2" opacity=".5"><path d="M48 15l-20 68 M100 3L79 76 M153 25l-22 68 M220 5l-20 70 M288 18l-20 68 M355 0l-21 71 M420 15l-20 68 M550 5l-21 70 M65 108l-17 58 M181 102l-18 60 M312 98l-18 61 M448 103l-18 60 M578 96l-18 60"/></g>
+        <ellipse cx="303" cy="292" rx="235" ry="22" fill="#080b18" opacity=".65"/><path d="M86 235 L111 191 Q127 172 175 164 L235 113 Q251 100 284 101 L382 105 Q407 107 427 132 L474 189 L509 205 Q527 214 529 235 L521 259 L78 259Z" fill="url(#carPaint)" stroke="#ff9a9e" stroke-width="2"/>
+        <path d="M188 162 L242 119 Q254 111 280 112 L312 113 L312 163Z" fill="url(#glass)" stroke="#f7c6c8" stroke-width="2"/><path d="M322 113 L378 116 Q399 118 416 140 L433 163 L322 163Z" fill="url(#glass)" stroke="#f7c6c8" stroke-width="2"/><path d="M317 112V165" stroke="#7d1934" stroke-width="7"/>
+        <g><path d="M210 147 Q205 126 221 122 Q238 121 240 142 L238 155 L213 155Z" fill="#201426"/><ellipse cx="225" cy="143" rx="12" ry="15" fill="#b97862"/><path d="M211 139 Q205 120 223 119 Q240 120 241 137 L235 130 Q224 128 213 136Z" fill="#211525"/><rect x="211" y="136" width="11" height="8" rx="2" fill="none" stroke="#f4d39a" stroke-width="2"/><rect x="225" y="136" width="11" height="8" rx="2" fill="none" stroke="#f4d39a" stroke-width="2"/><path d="M219 141h6" stroke="#f4d39a" stroke-width="2"/><path d="M214 156 Q225 150 237 157 L244 164 H206Z" fill="#8f2f5a"/></g>
+        <g><path d="M344 143 Q343 123 360 121 Q377 123 376 143 L373 157 L348 157Z" fill="#171725"/><ellipse cx="359" cy="143" rx="12" ry="15" fill="#c48a70"/><path d="M346 138 Q342 120 361 119 Q377 122 375 137 L369 130 Q357 128 347 136Z" fill="#211525"/><path d="M347 156 Q359 150 371 157 L381 164 H338Z" fill="#304a62"/></g>
+        <path d="M84 229 L111 211 L128 214 L120 231Z" fill="#fff0c7"/><path d="M478 210 L505 220 L507 231 L482 229Z" fill="#ffb8a8"/><path d="M110 259 L495 259" stroke="#ffb2b8" stroke-width="3" opacity=".65"/><circle cx="145" cy="260" r="28" fill="#11121e" stroke="#85809b" stroke-width="5"/><circle cx="145" cy="260" r="11" fill="#d5c9c6"/><circle cx="455" cy="260" r="28" fill="#11121e" stroke="#85809b" stroke-width="5"/><circle cx="455" cy="260" r="11" fill="#d5c9c6"/>
+        <text x="300" y="325" text-anchor="middle" fill="#f4d39a" font-size="11" font-family="Arial,sans-serif" letter-spacing="3">THE FANTASY WAS NEVER THE CAR</text></svg></div>
+      <p class="car-caption">A red Kylaq · a rainy evening · the memory of her eyes</p>
+      <div class="memory-card"><p class="quote">If the world could pause for one moment…</p><div class="choices"><button class="btn secondary" data-drive="talk">Crack the codes of life</button><button class="btn secondary" data-drive="flirt">Trade a look and a teasing smile</button><button class="btn secondary" data-drive="quiet">Let the rain hold the silence</button></div><div class="reveal" id="driveReveal"></div></div>
+    </div>
+  </section>
+
+  <section id="littlethings">
+    <div class="inner">
+      <div class="eyebrow">Chapter VI · The ordinary things, made extraordinary</div>
+      <h2>Not grand gestures.<br><span class="italic">Little universes.</span></h2>
+      <p class="lede">Tap each little possibility. Some stories are made of moments nobody else would think to remember.</p>
+      <div class="task-card">
+        <div class="choices">
+          <button class="btn secondary" data-little="coffee">☕ One more coffee</button>
+          <button class="btn secondary" data-little="travel">✈ A map with no fixed plan</button>
+          <button class="btn secondary" data-little="hair">✦ The way your hair falls</button>
+          <button class="btn secondary" data-little="codes">⌘ Cracking life's secret codes</button>
+        </div>
+        <div class="reveal" id="littleReveal">Choose a small universe above.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="letter">
+    <div class="inner">
+      <div class="eyebrow">The letter that belongs to this universe</div>
+      <h2>For <span class="italic"> Birthday girl, Shalini.</span></h2>
+      <div class="letter">
+        <p>Happy Birthday, Saaaalini !</p>
+        <p>I remember the first time I held your hand, how an ordinary gesture somehow became a moment my mind kept safe. Some memories do not need a grand setting. They simply stay warm.</p>
+        <p>I remember Saryu Mela too. I was sad when we met there, because I knew it might be difficult to meet you again easily. It is a peculiar kind of ache: being glad to see someone, while already missing the chance to see them again.</p>
+        <p>Since then, we have walked through some genuinely difficult stretches together. There were moments when your emotional world felt heavy, when questions married life got complicated, and when pregnancy brought hardest time and teary eyes. And way of talking were almost none. But, we kept holding hands with Teamchat and intercom. Koi aur hota to is sab me bikhar chuka hota. They were real hard times, and the journey has had its ups and downs.</p>
+        <p>But we kept finding ways through. We listened each other issues, we tried, we dealt with one thing at a time. Somewhere along the way, a bond that has been tested by life and, in its own way, made stronger.</p>
+        <p>I remember your voice, the way your hair frames your face, your spectacles, and the athletic ease in the way you carry yourself. Most of all, I remember your raw, unfiltered way of being yourself. You never seemed manufactured for other people's approval, and there is something quietly beautiful about that.</p>
+        <p>I do not know where this journey will lead. Life is not a story where we get to choose every turn, and there are realities that cannot be wished away. I am not writing this to predict an ending or ask you for an answer. I only want to be honest about the place this story has found in me.</p>
+        <p>And yes, I will probably keep imagining that parallel world.</p>
+        <p>Maybe it is made of small scenes instead: coffee forgotten mid-conversation, a shared joke that makes no sense to anyone else, your hand resting in mine, a wish to see your bare back and kiss that agains slowly, and a closeness that feels easy because it is wanted by both of us. Nothing staged. Nothing to prove. Just a moment that gets to be ours.</p>
+        <p>Perhaps the parallel world is not a plan at all. Perhaps it is simply a place where I can keep the impossible things gently, without asking reality to become something it is not.</p>
+        <p>Whatever comes next, I am grateful for the parts of this journey we have already shared: the laughter, the hard conversations, the unexpected tenderness, and the strength it took to move through the difficult days. I do not know the destination. I only know that the road has mattered.</p>
+        <p>I do not know whether that other universe exists anywhere beyond imagination. But I know I will keep returning to it sometimes, not to escape the life we have, but to give a little space to the life I once wondered about.</p>
+        <p class="sign">— From this side of the universe <span class="heart">♥</span></p>
+      </div>
+      <button class="btn" id="finalBtn">One last little surprise ✨</button>
+      <div class="reveal" id="finalReveal" style="text-align:center;border:0;border-radius:20px;background:linear-gradient(135deg,#5d203f55,#f4d39a12);padding:30px">
+        <p style="font-size:clamp(1.7rem,5vw,3rem);margin:0 0 12px">Some chapters change us.</p>
+        <p class="lede" style="margin-bottom:0">Whatever the next page brings, I hope we remember that we made it through some difficult ones, together. That matters to me more than a perfect ending ever could. HAPPY BIRTHDAY</p>
+        <div style="font-size:2rem;margin-top:18px" aria-hidden="true">✦ · ∞ · 💗</div>
+      </div>
+      <p class="end-note">A story about a journey still unfolding, and a parallel world that can remain a beautiful thought without asking the real world to answer.</p>
+      <button class="btn secondary" id="replayBtn" style="margin-top:20px">↻ Begin again</button>
+    </div>
+  </section>
+</main>
+<footer>Made of memories, imagination, and a little rain on a highway.<br>Best viewed slowly. ✦</footer>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.body.classList.add('js-motion');
+  // Give the story a film-like rhythm as each scene enters the frame.
+  const allScenes = $$('main section');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    const sceneObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          const flash = $('#chapterFlash');
+          if (entry.intersectionRatio > .45) {
+            document.body.classList.add('cinematic');
+            flash.classList.remove('flash'); void flash.offsetWidth; flash.classList.add('flash');
+          }
+        }
+      });
+    }, {threshold:[.12,.45,.7]});
+    allScenes.forEach(scene => sceneObserver.observe(scene));
+  } else { allScenes.forEach(scene => scene.classList.add('in-view')); }
+  const progress = $('#progress');
+  function updateProgress(){
+    const max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.width = (max > 0 ? scrollY/max*100 : 0) + '%';
+  }
+  addEventListener('scroll', updateProgress, {passive:true}); updateProgress();
+
+  // Gentle star field, no external libraries.
+  const canvas = $('#stars'), ctx = canvas.getContext('2d');
+  let stars = [];
+  function resize(){
+    const dpr = Math.min(devicePixelRatio || 1, 2);
+    canvas.width = innerWidth*dpr; canvas.height = innerHeight*dpr;
+    canvas.style.width = innerWidth+'px'; canvas.style.height = innerHeight+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    stars = Array.from({length:Math.min(125, Math.floor(innerWidth/7))}, () => ({
+      x:Math.random()*innerWidth,y:Math.random()*innerHeight,r:Math.random()*1.35+.2,
+      a:Math.random()*.65+.15,p:Math.random()*6.28,s:Math.random()*.018+.004
+    }));
+  }
+  function draw(){
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+    stars.forEach(s=>{
+      s.p += s.s;
+      const alpha = s.a*(.65+.35*Math.sin(s.p));
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,229,238,${alpha})`;ctx.fill();
+    });
+    if(!reduceMotion) requestAnimationFrame(draw);
+  }
+  resize(); draw(); addEventListener('resize',resize);
+  // Slow cinematic drift for the illustrated night drive. No sensor access required.
+  if (!reduceMotion) {
+    let driftQueued = false;
+    addEventListener('scroll', () => {
+      if (driftQueued) return; driftQueued = true;
+      requestAnimationFrame(() => {
+        const drive = $('#drive');
+        if (drive) {
+          const r = drive.getBoundingClientRect();
+          const t = Math.max(-1, Math.min(1, (innerHeight/2-r.top)/Math.max(r.height,1)));
+          const moon = drive.querySelector('.moon');
+          const art = drive.querySelector('.scene-art');
+          if (moon) moon.style.translate = `0 ${t*13}px`;
+          if (art) art.style.transform = `translateY(${t*-7}px)`;
+        }
+        driftQueued = false;
+      });
+    }, {passive:true});
+  }
+
+  function reveal(id, html){
+    const el = document.getElementById(id);
+    if(html) el.innerHTML = html;
+    el.classList.add('show');
+    el.scrollIntoView({behavior:reduceMotion?'auto':'smooth',block:'nearest'});
+  }
+  $('#beginBtn').addEventListener('click',()=>$('#training').scrollIntoView({behavior:'smooth'}));
+  $('#memoryBtn').addEventListener('click',()=>{
+    reveal('memoryReveal');
+    $('#memoryBtn').textContent='A memory, now unlocked ✓';
+    $('#typeLine').textContent='The same world. A different feeling.';
+  });
+  $$('#officeChoices button').forEach(b=>b.addEventListener('click',()=>{
+    const text = b.dataset.answer==='A'
+      ? 'An admirable theory. Unfortunately, the evidence suggests the attendance machine was merely an accomplice.'
+      : b.dataset.answer==='B'
+      ? 'A moving tribute to office infrastructure. The machine has been informed that it is not the main character.'
+      : 'Correct. One look could turn a routine workday into a small private festival. The official record will say: present. The unofficial record knows more.';
+    reveal('officeReveal',text);
+    $$('#officeChoices button').forEach(x=>x.disabled=true);
+  }));
+  $('#detailBtn').addEventListener('click',()=>{
+    reveal('detailReveal');$('#detailBtn').textContent='Remembered ✦';
+  });
+  $('#portalBtn').addEventListener('click',()=>{
+    reveal('portalReveal');
+    $('#portalBtn').textContent='The door is open ✦';
+    burstPetals(22);
+  });
+  const driveTexts = {
+    talk:'We would start with the meaning of life, detour into why people are the way they are, solve three problems nobody asked us to solve, and leave with twelve new questions. A perfect conversation, with rain keeping time outside.',
+    flirt:'A glance that lasts a heartbeat longer than necessary. A smile you try to hide and fail. A teasing line, then that look again. In the fantasy, the whole evening narrows to her eyes, bright behind her spectacles, while rain draws silver lines on the windows.',
+    quiet:'No soundtrack could improve it. Just the soft rain, evening lights blurred on the glass, and the quiet wonder of looking into her eyes without needing to explain why that was the moment you had imagined. Some silences say everything.'
+  };
+  $$('[data-drive]').forEach(b=>b.addEventListener('click',()=>{
+    reveal('driveReveal',driveTexts[b.dataset.drive]);burstPetals(8);
+  }));
+  const littleTexts = {
+    coffee:'One coffee becomes another because the conversation is not finished. We debate something gloriously unimportant, laugh at our own logic, and forget to check the time.',
+    travel:'A map, a half-charged phone, a questionable turn, and a destination discovered by accident. The best part would not be the place. It would be the stories collected on the way.',
+    hair:'The way your hair frames your face, shifts when you turn, and catches the soft evening light. A small detail, remembered with unreasonable clarity.',
+    codes:'We would try to crack the codes of work, people, happiness, and why the universe has such terrible timing. We might not solve them. We would have an excellent time trying.'
+  };
+  $$('[data-little]').forEach(b=>b.addEventListener('click',()=>{
+    reveal('littleReveal',littleTexts[b.dataset.little]);
+  }));
+  $('#finalBtn').addEventListener('click',()=>{
+    reveal('finalReveal');burstPetals(48);
+    $('#finalBtn').textContent='The universe has spoken ✦';
+  });
+  $('#replayBtn').addEventListener('click',()=>{
+    scrollTo({top:0,behavior:reduceMotion?'auto':'smooth'});
+    $$('.reveal').forEach(e=>e.classList.remove('show'));
+    $$('#officeChoices button').forEach(x=>x.disabled=false);
+    $('#memoryBtn').textContent='Show me what changed ✨';
+    $('#detailBtn').textContent='There is one more thing…';
+    $('#portalBtn').textContent='Open the parallel-world door ✦';
+    $('#finalBtn').textContent='One last little surprise ✨';
+  });
+
+  function burstPetals(n){
+    if(reduceMotion)return;
+    const glyphs=['✦','✧','♥','❀','·'];
+    for(let i=0;i<n;i++){
+      const p=document.createElement('span');p.className='petal';
+      p.textContent=glyphs[Math.floor(Math.random()*glyphs.length)];
+      p.style.left=Math.random()*100+'vw';
+      p.style.color=['#ff8eb5','#f4d39a','#f9dce9','#c5b6ff'][Math.floor(Math.random()*4)];
+      p.style.fontSize=(Math.random()*17+10)+'px';
+      p.style.setProperty('--drift',(Math.random()*240-120)+'px');
+      p.style.animationDuration=(Math.random()*3+3)+'s';
+      document.body.appendChild(p);setTimeout(()=>p.remove(),6500);
+    }
+  }
+
+  // Optional gentle synthesized ambience. It starts only after the visitor presses the music button.
+  let audioCtx=null, oscillator=null, gain=null, playing=false;
+  $('#soundToggle').addEventListener('click',()=>{
+    const btn=$('#soundToggle');
+    try{
+      if(!audioCtx) audioCtx=new (window.AudioContext||window.webkitAudioContext)();
+      if(audioCtx.state==='suspended') audioCtx.resume();
+      if(!playing){
+        oscillator=audioCtx.createOscillator();gain=audioCtx.createGain();
+        oscillator.type='sine';oscillator.frequency.value=110;
+        gain.gain.value=.018;oscillator.connect(gain);gain.connect(audioCtx.destination);oscillator.start();
+        playing=true;btn.textContent='♫';btn.setAttribute('aria-label','Turn ambient tone off');
+      }else{
+        gain.gain.setTargetAtTime(0,audioCtx.currentTime,.08);
+        oscillator.stop(audioCtx.currentTime+.3);playing=false;oscillator=null;gain=null;
+        btn.textContent='♫';btn.setAttribute('aria-label','Toggle ambient sound');
+      }
+    }catch(e){btn.textContent='×';btn.title='Ambient sound is unavailable in this browser';}
+  });
+})();
+</script>
+</body>
+</html>
